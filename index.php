@@ -1,4 +1,18 @@
-<?php require "functions.php"; $db = new dbexec();?>
+<?php 
+require "functions.php"; 
+$db = new dbexec();
+if(isset($_REQUEST['export']) && isset($_REQUEST['url']))
+{
+    $jsondata = file_get_contents($_REQUEST['url']);
+    $jsonans = json_decode($jsondata, true);
+    $csv = 'export.csv';
+    $file_pointer = fopen($csv, 'w');
+    foreach($jsonans as $i){
+        fputcsv($file_pointer, $i);
+    }
+    fclose($file_pointer);
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -90,6 +104,10 @@ let sleeveB = {"short":0,"long":0};
             event.preventDefault();
             setTimeout(function(){
                 resultTable();
+                totalSizeA = {"XS":0,"S":0,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0,"4XL":0,"5XL":0};
+                totalSizeB = {"XS":0,"S":0,"M":0,"L":0,"XL":0,"2XL":0,"3XL":0,"4XL":0,"5XL":0};
+                sleeveA = {"short":0,"long":0};
+                sleeveB = {"short":0,"long":0};
                 document.getElementById("formSubmit").reset();
             },
             100)
@@ -125,7 +143,10 @@ function selectPackage()
     t.innerHTML = "";
   }
 }
-
+function exportCSV()
+{
+    window.location.replace('?export=&url=http://localhost/baju/current_records.php');
+}
     resultTable();
 </script>
 </head>
@@ -186,6 +207,6 @@ while($p=$package->fetch_assoc())
 <div>
     <span id='total'></span>
 </div>
-
+<button onclick="exportCSV()">Export CSV</button>
 </body>
 </html>
