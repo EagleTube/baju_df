@@ -79,6 +79,7 @@ let sleeveB = {"short":0,"long":0};
         {
             var params = "add=records&id="+id+"&shopee="+shopee+"&name="+name+"&package="+package+"&quantity="+quantity+"&size="+size+"&sleeve="+sleeve+"&date="+date;
             http.open("POST","new_records.php",true);
+            http.setRequestHeader("Content-type","application/x-www-form-urlencoded");
             http.onreadystatechange = function(){
                 if(this.readyState==4 && this.status==200)
                 {
@@ -87,6 +88,15 @@ let sleeveB = {"short":0,"long":0};
             }
             http.send(params);
             event.preventDefault();
+            setTimeout(function(){
+                resultTable();
+                document.getElementById("formSubmit").reset();
+            },
+            100)
+            setTimeout(function(){
+                document.getElementById("result").innerHTML = "";
+            },
+            3000)
         }
     }
 function selectPackage() 
@@ -121,7 +131,7 @@ function selectPackage()
 </head>
 <body>
 <section class='submit'>
-<form name='add' onsubmit='sendPost()'>
+<form id='formSubmit' name='add' onsubmit='sendPost()' method='POST' >
 <input type='text' name='id' placeholder='shopee ID'>
 <input type='text' name='shopee' placeholder='Shopee User'>
 <input type='text' name='name' placeholder='Customer Name'>
