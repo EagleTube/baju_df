@@ -13,5 +13,5 @@ if(isset($_POST['add']))
     $func->sleeve = $_POST['sleeve'];
     $func->size = $_POST['size'];
     $func->date = $_POST['date'];
-    $func::AddData();
+    $func->customer();
 }
