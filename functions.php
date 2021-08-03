@@ -42,7 +42,7 @@ class dbexec
                 customer.date AS 'Date' from customer JOIN orders ON orders.cust_id=customer.cust_id JOIN package ON 
                 orders.package_id=package.package_id JOIN package_size ON orders.size_id=package_size.size_id JOIN sleeves ON 
                 orders.sid=sleeves.sid JOIN pricing ON pricing.package_id=package.package_id AND pricing.sid=sleeves.sid JOIN 
-                additONal_pricing ON additONal_pricing.size_id=package_size.size_id";
+                additONal_pricing ON additONal_pricing.size_id=package_size.size_id ORDER BY customer.date DESC";
 
         $display = $instance::connectDb()->query($cmd);
         return $display;
