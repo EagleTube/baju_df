@@ -23,14 +23,26 @@ class dbexec
 
     public function customer()
     {
-        $cmd = "INSERT INTO customer VALUES('$this->id','$this->shopee','$this->name','$this->date')";
-        $query = static::connectDb()->query($cmd) or die(static::connectDb()->error);
-
-        $cmd2 = "INSERT INTO orders(order_id,size_id,sid,cust_id,quantity,package_id) 
-                 VALUES (NULL, '$this->size', '$this->sleeve', '$this->id', '$this->quantity', '$this->package');";
-        $query2 = static::connectDb()->query($cmd2) or die(static::connectDb()->error);
-
-        echo "Successfully added!";
+        $ck = "SELECT cust_id FROM customer WHERE cust_id='$this->id'";
+        $qk = static::connectDb()->query($ck) or die(static::connectDb()->error);
+        $rk = $qk->fetch_assoc();
+        if(isset($rk['cust_id']) && $rk['cust_id']!="")
+        {
+            $cmd2 = "INSERT INTO orders(order_id,size_id,sid,cust_id,quantity,package_id) 
+            VALUES (NULL, '$this->size', '$this->sleeve', '$this->id', '$this->quantity', '$this->package');";
+            $query2 = static::connectDb()->query($cmd2) or die(static::connectDb()->error);
+            echo "Successfully added!";
+        }
+        else
+        {
+            $cmd = "INSERT INTO customer VALUES('$this->id','$this->shopee','$this->name','$this->date')";
+            $query = static::connectDb()->query($cmd) or die(static::connectDb()->error);
+    
+            $cmd2 = "INSERT INTO orders(order_id,size_id,sid,cust_id,quantity,package_id) 
+                     VALUES (NULL, '$this->size', '$this->sleeve', '$this->id', '$this->quantity', '$this->package');";
+            $query2 = static::connectDb()->query($cmd2) or die(static::connectDb()->error);
+            echo "Successfully added!";
+        }
     }
 
     public static function display()
